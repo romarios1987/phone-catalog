@@ -12,7 +12,12 @@ export default class PhoneViewer extends Component {
         //     this._onBack();
         // });
 
-        this.on('click', '[data-element="back-button"]', this._onBack);
+        this.on('click', 'back-button', this._onBack);
+
+
+        this.on('click', 'small-image', (e) => {
+            this._element.querySelector('[data-element="large-image"]').src = e.target.src;
+        })
     }
 
 
@@ -27,40 +32,31 @@ export default class PhoneViewer extends Component {
 
 
     _render() {
-        const phone = this._phoneDetails;
-        //console.log(phone[0].images[0]);
+        //const phone = this._phoneDetails;
+
+        const {name, description, images} = this._phoneDetails;
+
         this._element.innerHTML = `
         <div>
-            <img class="phone" src="${phone[0].images[0]}">
-
-        <button data-element="back-button">Back</button>
-        <button>Add to basket</button>
-
-
-    <h1>${phone.name}</h1>
-
-    <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android™ 3.0 (Honeycomb) — the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you’ll enjoy HD video in a thin, light, powerful and upgradeable tablet.</p>
-
-    <ul class="phone-thumbs">
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-      </li>
-    </ul>        
-</div>`;
+            <img 
+                data-element="large-image" 
+                class="phone" 
+                src="${images[0]}"
+                alt="${name}">
+            <button data-element="back-button">Back</button>
+            <button>Add to basket</button>
+            <h1>${name}</h1>
+            <p>${description}</p>
+            
+            <ul class="phone-thumbs">
+                ${images.map((imageUrl) => `
+                <li>
+                    <img
+                        data-element="small-image"
+                        src="${imageUrl}">
+                </li>`).join('')}
+            </ul>   
+                 
+        </div>`;
     }
 }

@@ -19,7 +19,6 @@ export default class PhonesPage {
 
             onPhoneSelected: (phoneId) => {
                 const phoneDetails = PhoneService.getById(phoneId);
-
                 this._catalog.hide();
                 this._viewer.show(phoneDetails);
             }

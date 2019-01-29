@@ -12,9 +12,9 @@ export default class Component {
     }
 
 
-    on(eventName, selector, callback) {
+    on(eventName, elementName, callback) {
         this._element.addEventListener('click', (e) => {
-            const delegateTarget = e.target.closest(selector);
+            const delegateTarget = e.target.closest(`[data-element=${elementName}]`);
             if (!delegateTarget || !this._element.contains(delegateTarget)) {
                 return;
             }

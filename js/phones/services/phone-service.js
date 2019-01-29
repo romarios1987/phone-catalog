@@ -1442,8 +1442,14 @@ const PhoneService = {
         return phonesFromServer;
     },
 
+    // getById(id) {
+    //     return phoneDetails;
+    // }
+
     getById(id) {
-        return phoneDetails;
+        let currentPhone = phoneDetails.filter(phone => phone.id === id);
+        console.log(currentPhone);
+        return currentPhone[0]
     }
 };
 export default PhoneService;
