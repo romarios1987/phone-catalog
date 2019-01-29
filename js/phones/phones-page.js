@@ -1,6 +1,8 @@
 import PhoneCatalog from "./components/phone-catalog.js";
 import PhoneViewer from "./components/phone-viewer.js";
 import PhoneService from "./services/phone-service.js";
+import ShoppingCart from "./components/shopping-cart.js";
+import Filter from "./components/filter.js";
 // import {getAll} from "./services/phone-service.js";
 
 
@@ -35,6 +37,17 @@ export default class PhonesPage {
         });
 
 
+        // Creating Component Filter
+        this._shopping_cart = new Filter({
+            element: document.querySelector('[data-component="filter"]'),
+        });
+
+
+        // Creating Component ShoppingCart
+        this._shopping_cart = new ShoppingCart({
+            element: document.querySelector('[data-component="shopping-cart"]'),
+        });
+
     }
 
     _render() {
@@ -45,24 +58,13 @@ export default class PhonesPage {
         
          <!--Search-->
           <section>
-            <p>Search:<input></p>
-            <p>Sort by:
-            <select>
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
-              </select>
-              </p>
+            <div data-component="filter"></div>
           </section>
         <!--Search-->
     
         <!--Shopping Cart-->
           <section>
-            <p>Shopping Cart</p>
-            <ul>
-              <li>Phone 11</li>
-              <li>Phone 22</li>
-              <li>Phone 33</li>
-            </ul>
+           <div data-component="shopping-cart"></div>
           </section>
         </div>
          <!--Shopping Cart-->
