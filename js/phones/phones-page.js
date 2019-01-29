@@ -1,4 +1,4 @@
-import PhonesCatalog from "./components/phone-catalog.js";
+import PhoneCatalog from "./components/phone-catalog.js";
 import PhoneViewer from "./components/phone-viewer.js";
 import PhoneService from "./services/phone-service.js";
 // import {getAll} from "./services/phone-service.js";
@@ -7,13 +7,12 @@ import PhoneService from "./services/phone-service.js";
 export default class PhonesPage {
 
     constructor({element}) {
-
         this._element = element;
 
         this._render();
 
         // Creating Component Catalog
-        this._catalog = new PhonesCatalog({
+        this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
             phones: PhoneService.getAll(),
 
@@ -29,10 +28,12 @@ export default class PhonesPage {
 
         // Creating Component Viewer
         this._viewer = new PhoneViewer({
-            element: document.querySelector('[data-component="phone-viewer"]')
+            element: document.querySelector('[data-component="phone-viewer"]'),
+            onBack: () =>{
+                this._viewer.hide();
+                this._catalog.show();
+            }
         });
-
-
 
 
     }

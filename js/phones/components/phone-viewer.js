@@ -1,24 +1,39 @@
-export default class PhoneViewer {
-    constructor({element}) {
-        this._element = element;
+import Component from "../component.js";
+
+export default class PhoneViewer extends Component {
+
+    constructor({element, onBack}) {
+        super({element});
+        this._onBack = onBack;
+
+        this._element.addEventListener('click', (e) => {
+            const backButton = e.target.closest('[data-element="back-button"]');
+
+            if (!backButton) return;
+
+            this._onBack();
+
+        })
     }
 
 
     show(phoneDetails) {
         this._phoneDetails = phoneDetails;
-        this._element.hidden = false;
+        // this._element.hidden = false;
 
+        // call parent method
+        super.show();
         this._render();
-
     }
 
     _render() {
         const phone = this._phoneDetails;
+        //console.log(phone[0].images[0]);
         this._element.innerHTML = `
         <div>
-            <img class="phone" src="${phone.images[0]}">
+            <img class="phone" src="${phone[0].images[0]}">
 
-        <button>Back</button>
+        <button data-element="back-button">Back</button>
         <button>Add to basket</button>
 
 
