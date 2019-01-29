@@ -6,14 +6,13 @@ export default class PhoneViewer extends Component {
         super({element});
         this._onBack = onBack;
 
-        this._element.addEventListener('click', (e) => {
-            const backButton = e.target.closest('[data-element="back-button"]');
+        // this._element.addEventListener('click', (e) => {
+        //     const backButton = e.target.closest('[data-element="back-button"]');
+        //     if (!backButton) return;
+        //     this._onBack();
+        // });
 
-            if (!backButton) return;
-
-            this._onBack();
-
-        })
+        this.on('click', '[data-element="back-button"]', this._onBack);
     }
 
 
@@ -25,6 +24,7 @@ export default class PhoneViewer extends Component {
         super.show();
         this._render();
     }
+
 
     _render() {
         const phone = this._phoneDetails;

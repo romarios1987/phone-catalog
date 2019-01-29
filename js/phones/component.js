@@ -10,4 +10,15 @@ export default class Component {
     show() {
         this._element.hidden = false;
     }
+
+
+    on(eventName, selector, callback) {
+        this._element.addEventListener('click', (e) => {
+            const delegateTarget = e.target.closest(selector);
+            if (!delegateTarget || !this._element.contains(delegateTarget)) {
+                return;
+            }
+            callback(e);
+        })
+    }
 }
