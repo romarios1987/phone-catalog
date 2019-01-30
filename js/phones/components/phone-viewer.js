@@ -2,9 +2,9 @@ import Component from "../component.js";
 
 export default class PhoneViewer extends Component {
 
-    constructor({element, onBack}) {
+    constructor({element}) {
         super({element});
-        this._onBack = onBack;
+        //this._onBack = onBack;
 
         // this._element.addEventListener('click', (e) => {
         //     const backButton = e.target.closest('[data-element="back-button"]');
@@ -12,7 +12,9 @@ export default class PhoneViewer extends Component {
         //     this._onBack();
         // });
 
-        this.on('click', 'back-button', this._onBack);
+        this.on('click', 'back-button', ()=>{
+            this.emit('back');
+        });
 
 
         this.on('click', 'small-image', (e) => {

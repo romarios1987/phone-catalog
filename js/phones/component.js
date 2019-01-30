@@ -1,6 +1,7 @@
 export default class Component {
     constructor({element}) {
         this._element = element;
+        this._callbackMap = {};
     }
 
     hide() {
@@ -11,7 +12,6 @@ export default class Component {
         this._element.hidden = false;
     }
 
-
     on(eventName, elementName, callback) {
         this._element.addEventListener('click', (e) => {
             const delegateTarget = e.target.closest(`[data-element=${elementName}]`);
@@ -20,5 +20,17 @@ export default class Component {
             }
             callback(e);
         })
+    }
+
+
+    subscribe(eventName, callback) {
+        this._callbackMap[eventName] = callback;
+    }
+
+
+    emit(eventName, data) {
+        const callback = this._callbackMap[eventName];
+        if (!callback) return;
+        callback(data);
     }
 }

@@ -19,21 +19,40 @@ export default class PhonesPage {
             phones: PhoneService.getAll(),
 
 
-            onPhoneSelected: (phoneId) => {
-                const phoneDetails = PhoneService.getById(phoneId);
-                this._catalog.hide();
-                this._viewer.show(phoneDetails);
-            }
+            // Method callback onPhoneSelected
+            // onPhoneSelected: (phoneId) => {
+            //     const phoneDetails = PhoneService.getById(phoneId);
+            //     this._catalog.hide();
+            //     this._viewer.show(phoneDetails);
+            // }
+
         });
+
+        // Обработчик события 'phone-selected' для PhoneCatalog
+        this._catalog.subscribe('phone-selected', (phoneId) => {
+            const phoneDetails = PhoneService.getById(phoneId);
+            this._catalog.hide();
+            this._viewer.show(phoneDetails);
+        });
+
+
 
 
         // Creating Component Viewer
         this._viewer = new PhoneViewer({
             element: document.querySelector('[data-component="phone-viewer"]'),
-            onBack: () =>{
+
+            // onBack: () => {
+            //     this._viewer.hide();
+            //     this._catalog.show();
+            // }
+
+        });
+
+        // Обработчик события 'on-back' для PhoneViewer
+        this._viewer.subscribe('back', () => {
                 this._viewer.hide();
                 this._catalog.show();
-            }
         });
 
 
@@ -49,6 +68,7 @@ export default class PhonesPage {
         });
 
     }
+
 
     _render() {
         this._element.innerHTML = `
