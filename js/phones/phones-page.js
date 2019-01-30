@@ -13,6 +13,14 @@ export default class PhonesPage {
 
         this._render();
 
+        this._initCatalog();
+        this._initViewer();
+        this._initShoppingCart();
+        this._initFilter();
+    }
+
+
+    _initCatalog() {
         // Creating Component Catalog
         this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
@@ -34,10 +42,9 @@ export default class PhonesPage {
             this._catalog.hide();
             this._viewer.show(phoneDetails);
         });
+    }
 
-
-
-
+    _initViewer() {
         // Creating Component Viewer
         this._viewer = new PhoneViewer({
             element: document.querySelector('[data-component="phone-viewer"]'),
@@ -51,24 +58,24 @@ export default class PhonesPage {
 
         // Обработчик события 'on-back' для PhoneViewer
         this._viewer.subscribe('back', () => {
-                this._viewer.hide();
-                this._catalog.show();
+            this._viewer.hide();
+            this._catalog.show();
         });
+    }
 
-
-        // Creating Component Filter
-        this._shopping_cart = new Filter({
-            element: document.querySelector('[data-component="filter"]'),
-        });
-
-
+    _initShoppingCart() {
         // Creating Component ShoppingCart
         this._shopping_cart = new ShoppingCart({
             element: document.querySelector('[data-component="shopping-cart"]'),
         });
-
     }
 
+    _initFilter() {
+        // Creating Component Filter
+        this._shopping_cart = new Filter({
+            element: document.querySelector('[data-component="filter"]'),
+        });
+    }
 
     _render() {
         this._element.innerHTML = `
