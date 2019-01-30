@@ -26,6 +26,14 @@ export default class PhonesPage {
             element: document.querySelector('[data-component="shopping-cart"]'),
         });
 
+        // Обработчик события 'phone-selected' для ShoppingCart
+        this._shopping_cart.subscribe('phone-selected', (itemId) => {
+            const phoneDetails = PhoneService.getById(itemId);
+            console.log(phoneDetails);
+            this._catalog.hide();
+            this._viewer.show(phoneDetails);
+        });
+
     }
 
 
@@ -66,6 +74,15 @@ export default class PhonesPage {
             this._viewer.hide();
             this._catalog.show();
         });
+
+
+        // Обработчик события 'cart-button-clicked' для Viewer
+        this._viewer.subscribe('add-cart-clicked', (phoneId) => {
+                // this._phoneDetails = phoneId;
+                const phoneDetails = PhoneService.getById(phoneId);
+                this._shopping_cart.addToCart(phoneDetails);
+            }
+        );
     }
 
     _initFilter() {

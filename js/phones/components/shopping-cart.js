@@ -14,12 +14,20 @@ export default class ShoppingCart extends Component {
             this._basketItems.splice(currentBasketItem, 1);
             this._render();
         });
+
+
+        this.on('click', 'details-link', (e)=>{
+            let itemElement = e.target.closest('[data-element="basket-item"]');
+            console.log(itemElement);
+            //this.emit('phone-selected', e.target);
+            this.emit('phone-selected', itemElement.dataset.itemId);
+        });
     }
 
-    _clearCart(){
-        this._basketItems = [];
-        this._render();
-    }
+    // _clearCart(){
+    //     this._basketItems = [];
+    //     this._render();
+    // }
 
 
 
@@ -60,9 +68,12 @@ export default class ShoppingCart extends Component {
             <ul data-element="basket-list-items" class="list-group">
              ${this._basketItems.map(({id, name, img, count}) => {
             return `
-                    <li  data-element="basket-item"  class="list-group-item basket-item">
+                    <li  
+                    data-element="basket-item"  
+                    data-item-id="${id}"
+                    class="list-group-item basket-item">
                     <img style="width: 40px" src="${img}" alt="${name}">
-                    <a href="#!/phones/${id}">${name}</a>
+                    <a href="#!/phones/${id}"  data-element="details-link">${name}</a>
                           <input style="width: 20%;" type="number" class="item-count form-control" data-name="${name}" value="${count}">
                         <span 
                             data-element="remove-button"

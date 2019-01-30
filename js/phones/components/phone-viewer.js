@@ -12,12 +12,19 @@ export default class PhoneViewer extends Component {
 
         this.on('click', 'small-image', (e) => {
             this._element.querySelector('[data-element="large-image"]').src = e.target.src;
-        })
+        });
+
+
+        this.on('click', 'cart-button', () => {
+            this.emit(
+                'add-cart-clicked', this._phoneDetails.id);
+        });
     }
 
 
     show(phoneDetails) {
         this._phoneDetails = phoneDetails;
+        //console.log(this._phoneDetails);
         // this._element.hidden = false;
 
         // call parent method
@@ -40,7 +47,7 @@ export default class PhoneViewer extends Component {
                 src="${images[0]}"
                 alt="${name}">
             <button data-element="back-button">Back</button>
-            <button>Add to basket</button>
+            <button data-element="cart-button" class="btn btn-success">Add to basket</button>
             <h1>${name}</h1>
             <p>${description}</p>
             
