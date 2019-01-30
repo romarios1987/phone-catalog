@@ -5,11 +5,11 @@ import ShoppingCart from "./components/shopping-cart.js";
 import Filter from "./components/filter.js";
 // import {getAll} from "./services/phone-service.js";
 
-
 export default class PhonesPage {
 
     constructor({element}) {
         this._element = element;
+
 
         this._render();
 
@@ -20,20 +20,20 @@ export default class PhonesPage {
     }
 
 
+    _initShoppingCart() {
+        // Creating Component ShoppingCart
+        this._shopping_cart = new ShoppingCart({
+            element: document.querySelector('[data-component="shopping-cart"]'),
+        });
+
+    }
+
+
     _initCatalog() {
         // Creating Component Catalog
         this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
-            phones: PhoneService.getAll(),
-
-
-            // Method callback onPhoneSelected
-            // onPhoneSelected: (phoneId) => {
-            //     const phoneDetails = PhoneService.getById(phoneId);
-            //     this._catalog.hide();
-            //     this._viewer.show(phoneDetails);
-            // }
-
+            phones: PhoneService.getAll()
         });
 
         // Обработчик события 'phone-selected' для PhoneCatalog
@@ -42,18 +42,23 @@ export default class PhonesPage {
             this._catalog.hide();
             this._viewer.show(phoneDetails);
         });
+
+
+        // Обработчик события 'cart-button-clicked' для PhoneCatalog
+        this._catalog.subscribe('add-cart-clicked', (phoneId) => {
+            // this._phoneDetails = phoneId;
+            const phoneDetails = PhoneService.getById(phoneId);
+            this._shopping_cart.addToCart(phoneDetails);
+            }
+        );
+
+
     }
 
     _initViewer() {
         // Creating Component Viewer
         this._viewer = new PhoneViewer({
             element: document.querySelector('[data-component="phone-viewer"]'),
-
-            // onBack: () => {
-            //     this._viewer.hide();
-            //     this._catalog.show();
-            // }
-
         });
 
         // Обработчик события 'on-back' для PhoneViewer
@@ -63,16 +68,9 @@ export default class PhonesPage {
         });
     }
 
-    _initShoppingCart() {
-        // Creating Component ShoppingCart
-        this._shopping_cart = new ShoppingCart({
-            element: document.querySelector('[data-component="shopping-cart"]'),
-        });
-    }
-
     _initFilter() {
         // Creating Component Filter
-        this._shopping_cart = new Filter({
+        this.filter = new Filter({
             element: document.querySelector('[data-component="filter"]'),
         });
     }
@@ -81,7 +79,7 @@ export default class PhonesPage {
         this._element.innerHTML = `
       <div class="row">
         <!--Sidebar-->
-        <div class="col-md-3">
+        <div class="col-md-4">
         
          <!--Search-->
           <section>
@@ -98,7 +96,7 @@ export default class PhonesPage {
         <!--Sidebar-->
     
         <!--Main content-->
-        <div class="col-md-9">
+        <div class="col-md-8">
           <div data-component="phone-catalog"></div>
           <div data-component="phone-viewer"></div>
         </div>

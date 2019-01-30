@@ -1448,7 +1448,7 @@ const PhoneService = {
 
     getById(id) {
         let currentPhone = phoneDetails.filter(phone => phone.id === id);
-        console.log(currentPhone);
+       // console.log(currentPhone);
         return currentPhone[0]
     }
 };

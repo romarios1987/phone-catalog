@@ -5,18 +5,28 @@ export default class PhoneCatalog extends Component {
 
         super({element});
 
-        this._element = element;
+        //this._element = element;
         this._phones = phones;
 
         this._render();
 
         this.on('click', 'details-link', (e) => {
             let phoneElement = e.target.closest('[data-element="phone"]');
+            console.log(phoneElement);
             this.emit('phone-selected', phoneElement.dataset.phoneId);
         });
+
+
+        this.on('click', 'cart-button', (e) => {
+            //let phoneElement = e.target.closest('[data-element="phone"]');
+            //this.emit('phone-selected', phoneElement.dataset.phoneId);
+
+            let phoneElement = e.target.closest('[data-element="phone"]');
+            this.emit(
+                'add-cart-clicked', phoneElement.dataset.phoneId);
+        });
+        
     }
-
-
 
     _render() {
         this._element.innerHTML = `
@@ -38,7 +48,7 @@ export default class PhoneCatalog extends Component {
             </a>
             
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success">Add</a>
+              <a data-element="cart-button" class="btn btn-success">Add</a>
             </div>
             
             <a href="#!/phones/${id}" 

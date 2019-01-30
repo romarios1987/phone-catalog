@@ -1,5 +1,17 @@
 /* app css stylesheet */
 
+ul, li{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.basket-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 body {
   padding-top: 20px;
   background-color: lightgoldenrodyellow;
