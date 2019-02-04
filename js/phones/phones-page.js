@@ -4,11 +4,13 @@ import PhoneService from "./services/phone-service.js";
 import ShoppingCart from "./components/shopping-cart.js";
 import Filter from "./components/filter.js";
 // import {getAll} from "./services/phone-service.js";
-
 export default class PhonesPage {
 
     constructor({element}) {
         this._element = element;
+
+
+        this._phoneService = new PhoneService();
 
 
         this._render();
@@ -19,7 +21,6 @@ export default class PhonesPage {
         this._initFilter();
     }
 
-
     _initShoppingCart() {
         // Creating Component ShoppingCart
         this._shopping_cart = new ShoppingCart({
@@ -28,10 +29,12 @@ export default class PhonesPage {
 
         // Обработчик события 'phone-selected' для ShoppingCart
         this._shopping_cart.subscribe('phone-selected', (itemId) => {
-            const phoneDetails = PhoneService.getById(itemId);
-            console.log(phoneDetails);
-            this._catalog.hide();
-            this._viewer.show(phoneDetails);
+
+            this._phoneService.getById(itemId, (phoneDetails) => {
+                this._catalog.hide();
+                this._viewer.show(phoneDetails);
+            });
+
         });
 
     }
@@ -39,24 +42,33 @@ export default class PhonesPage {
 
     _initCatalog() {
         // Creating Component Catalog
+
+
+        //const phones  = new PhoneService();
+
         this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
-            phones: PhoneService.getAll()
+            phones: this._phoneService.getAll()
         });
+
+        //console.log(_phoneService.getAll());
 
         // Обработчик события 'phone-selected' для PhoneCatalog
         this._catalog.subscribe('phone-selected', (phoneId) => {
-            const phoneDetails = PhoneService.getById(phoneId);
-            this._catalog.hide();
-            this._viewer.show(phoneDetails);
+            this._phoneService.getById(phoneId, (phoneDetails) => {
+                this._catalog.hide();
+                this._viewer.show(phoneDetails);
+            });
+
         });
 
 
         // Обработчик события 'cart-button-clicked' для PhoneCatalog
         this._catalog.subscribe('add-cart-clicked', (phoneId) => {
-            // this._phoneDetails = phoneId;
-            const phoneDetails = PhoneService.getById(phoneId);
-            this._shopping_cart.addToCart(phoneDetails);
+                // this._phoneDetails = phoneId;
+                this._phoneService.getById(phoneId, (phoneDetails) => {
+                    this._shopping_cart.addToCart(phoneDetails);
+                })
             }
         );
 
@@ -79,8 +91,9 @@ export default class PhonesPage {
         // Обработчик события 'cart-button-clicked' для Viewer
         this._viewer.subscribe('add-cart-clicked', (phoneId) => {
                 // this._phoneDetails = phoneId;
-                const phoneDetails = PhoneService.getById(phoneId);
-                this._shopping_cart.addToCart(phoneDetails);
+                this._phoneService.getById(phoneId, (phoneDetails) => {
+                    this._shopping_cart.addToCart(phoneDetails);
+                });
             }
         );
     }
@@ -122,3 +135,4 @@ export default class PhonesPage {
     `;
     }
 }
+
