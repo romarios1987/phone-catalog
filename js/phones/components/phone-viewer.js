@@ -39,6 +39,8 @@ export default class PhoneViewer extends Component {
 
         const {name, description, images} = this._phoneDetails;
 
+       // console.log(this._phoneDetails);
+
         this._element.innerHTML = `
         <div>
             <img 

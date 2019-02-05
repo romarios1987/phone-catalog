@@ -1492,23 +1492,23 @@
 
 export default class PhoneService {
 
-    getAll() {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://mate-academy.github.io/phone-catalogue-static/phones/phones.json', false);
-        xhr.send();
-
-        return JSON.parse(xhr.responseText);
+    constructor() {
+        this._baseUrl = 'https://mate-academy.github.io/phone-catalogue-static/phones';
     }
 
+    async _getResource(url) {
+        const res = await fetch(`${this._baseUrl}/${url}.json`);
+        if (!res.ok) {
+            throw  new Error(`Could not fetch ${url}, received ${res.status} `)
+        }
+        return await res.json();
+    }
 
-    getById(id, callback) {
-        const xhr = new XMLHttpRequest();
-        xhr.open(
-            'GET',
-            `https://mate-academy.github.io/phone-catalogue-static/phones/${id}.json`,
-            true);
-        xhr.send();
-        xhr.onload = () => callback(JSON.parse(xhr.responseText));
+    async getAllPhones() {
+        return await this._getResource('phones');
+    }
+
+    async getPhoneById(phoneId) {
+        return await this._getResource(`${phoneId}`);
     }
 }
-

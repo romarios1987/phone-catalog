@@ -22,6 +22,7 @@ export default class PhonesPage {
     }
 
     _initShoppingCart() {
+
         // Creating Component ShoppingCart
         this._shopping_cart = new ShoppingCart({
             element: document.querySelector('[data-component="shopping-cart"]'),
@@ -30,48 +31,38 @@ export default class PhonesPage {
         // Обработчик события 'phone-selected' для ShoppingCart
         this._shopping_cart.subscribe('phone-selected', (itemId) => {
 
-            this._phoneService.getById(itemId, (phoneDetails) => {
+            this._phoneService.getPhoneById(itemId).then((phone) => {
                 this._catalog.hide();
-                this._viewer.show(phoneDetails);
-            });
-
+                this._viewer.show(phone);
+            })
         });
-
     }
 
 
-    _initCatalog() {
+    async _initCatalog() {
+
         // Creating Component Catalog
-
-
-        //const phones  = new PhoneService();
-
         this._catalog = new PhoneCatalog({
             element: document.querySelector('[data-component="phone-catalog"]'),
-            phones: this._phoneService.getAll()
+            phones: await this._phoneService.getAllPhones()
         });
 
-        //console.log(_phoneService.getAll());
 
         // Обработчик события 'phone-selected' для PhoneCatalog
         this._catalog.subscribe('phone-selected', (phoneId) => {
-            this._phoneService.getById(phoneId, (phoneDetails) => {
+            this._phoneService.getPhoneById(phoneId).then((phone) => {
                 this._catalog.hide();
-                this._viewer.show(phoneDetails);
+                this._viewer.show(phone);
             });
-
         });
-
 
         // Обработчик события 'cart-button-clicked' для PhoneCatalog
         this._catalog.subscribe('add-cart-clicked', (phoneId) => {
-                // this._phoneDetails = phoneId;
-                this._phoneService.getById(phoneId, (phoneDetails) => {
-                    this._shopping_cart.addToCart(phoneDetails);
+                this._phoneService.getPhoneById(phoneId).then((phone) => {
+                    this._shopping_cart.addToCart(phone);
                 })
             }
         );
-
 
     }
 
@@ -91,9 +82,9 @@ export default class PhonesPage {
         // Обработчик события 'cart-button-clicked' для Viewer
         this._viewer.subscribe('add-cart-clicked', (phoneId) => {
                 // this._phoneDetails = phoneId;
-                this._phoneService.getById(phoneId, (phoneDetails) => {
-                    this._shopping_cart.addToCart(phoneDetails);
-                });
+                this._phoneService.getPhoneById(phoneId).then((phone) => {
+                    this._shopping_cart.addToCart(phone);
+                })
             }
         );
     }
