@@ -24,14 +24,9 @@ export default class PhoneViewer extends Component {
 
     show(phoneDetails) {
         this._phoneDetails = phoneDetails;
-        //console.log(this._phoneDetails);
-        // this._element.hidden = false;
-
-        // call parent method
         super.show();
         this._render();
     }
-
 
 
     _render() {

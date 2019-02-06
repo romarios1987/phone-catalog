@@ -13,12 +13,12 @@ export default class Component {
     }
 
     on(eventName, elementName, callback) {
-        this._element.addEventListener('click', (e) => {
-            const delegateTarget = e.target.closest(`[data-element=${elementName}]`);
+        this._element.addEventListener(eventName, (event) => {
+            const delegateTarget = event.target.closest(`[data-element=${elementName}]`);
             if (!delegateTarget || !this._element.contains(delegateTarget)) {
                 return;
             }
-            callback(e);
+            callback(event);
         })
     }
 
@@ -32,6 +32,18 @@ export default class Component {
         const callback = this._callbackMap[eventName];
         if (!callback) return;
         callback(data);
+    }
+
+
+    debounce(func, time) {
+        let interval;
+        return (...args) => {
+            clearTimeout(interval);
+            interval = setTimeout(() => {
+                interval = null;
+                func(...args);
+            }, time);
+        }
     }
 
 }
