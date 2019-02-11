@@ -1,45 +1,40 @@
-import Component from "../component.js";
+import Component from '../component.js';
 
 export default class PhoneCatalog extends Component {
-    constructor({element}) {
+  constructor({ element }) {
+    super({ element });
 
-        super({element});
+    this._phones = [];
 
-        this._phones = [];
+    this._render();
 
-        this._render();
+    this.on('click', 'details-link', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
+      this.emit('phone-selected', phoneElement.dataset.phoneId);
+    });
 
-        this.on('click', 'details-link', (e) => {
-            let phoneElement = e.target.closest('[data-element="phone"]');
-            //console.log(phoneElement);
-            this.emit('phone-selected', phoneElement.dataset.phoneId);
-        });
-
-        this.on('click', 'cart-button', (e) => {
-            //let phoneElement = e.target.closest('[data-element="phone"]');
-            //this.emit('phone-selected', phoneElement.dataset.phoneId);
-
-            let phoneElement = e.target.closest('[data-element="phone"]');
-            this.emit(
-                'add-cart-clicked', phoneElement.dataset.phoneId);
-        });
-    }
+    this.on('click', 'cart-button', (event) => {
+      const phoneElement = event.target.closest('[data-element="phone"]');
+      this.emit(
+        'add-cart-clicked', phoneElement.dataset.phoneId,
+      );
+    });
+  }
 
 
-    show(phones) {
-        this._phones = phones;
-        super.show();
-        this._render();
-    }
+  show(phones) {
+    this._phones = phones;
+    super.show();
+    this._render();
+  }
 
 
-
-    _render() {
-        this._element.innerHTML = `
+  _render() {
+    this._element.innerHTML = `
         <ul class="phones">
-            ${this._phones.map(({id, name, imageUrl, snippet}) => {
-            //const {id, name, imageUrl, snippet} = phone;
-            return `
+            ${this._phones.map(({
+    id, name, imageUrl, snippet,
+  }) => `
           <li 
             data-element="phone" 
             data-phone-id="${id}"
@@ -63,8 +58,7 @@ export default class PhoneCatalog extends Component {
             
             <p>${snippet}</p>
             
-          </li>`
-        }).join('')}
+          </li>`).join('')}
         </ul>`;
-    }
+  }
 }

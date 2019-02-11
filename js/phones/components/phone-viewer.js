@@ -1,42 +1,39 @@
-import Component from "../component.js";
+import Component from '../component.js';
 
 export default class PhoneViewer extends Component {
+  constructor({ element }) {
+    super({ element });
 
-    constructor({element}) {
-        super({element});
-
-        this.on('click', 'back-button', ()=>{
-            this.emit('back');
-        });
-
-
-        this.on('click', 'small-image', (e) => {
-            this._element.querySelector('[data-element="large-image"]').src = e.target.src;
-        });
+    this.on('click', 'back-button', () => {
+      this.emit('back');
+    });
 
 
-        this.on('click', 'cart-button', () => {
-            this.emit(
-                'add-cart-clicked', this._phoneDetails.id);
-        });
-    }
+    this.on('click', 'small-image', (event) => {
+      this._element.querySelector('[data-element="large-image"]').src = event.target.src;
+    });
 
 
-    show(phoneDetails) {
-        this._phoneDetails = phoneDetails;
-        super.show();
-        this._render();
-    }
+    this.on('click', 'cart-button', () => {
+      this.emit(
+        'add-cart-clicked', this._phoneDetails.id,
+      );
+    });
+  }
 
 
-    _render() {
-        //const phone = this._phoneDetails;
+  show(phoneDetails) {
+    this._phoneDetails = phoneDetails;
+    super.show();
+    this._render();
+  }
 
-        const {name, description, images} = this._phoneDetails;
 
-       // console.log(this._phoneDetails);
+  _render() {
+    const { name, description, images } = this._phoneDetails;
 
-        this._element.innerHTML = `
+
+    this._element.innerHTML = `
         <div>
             <img 
                 data-element="large-image" 
@@ -49,14 +46,16 @@ export default class PhoneViewer extends Component {
             <p>${description}</p>
             
             <ul class="phone-thumbs">
-                ${images.map((imageUrl) => `
+                ${images.map(imageUrl => `
                 <li>
                     <img
                         data-element="small-image"
-                        src="${imageUrl}">
+                        src="${imageUrl}"
+                        alt="${name}"
+                        >
                 </li>`).join('')}
             </ul>   
                  
         </div>`;
-    }
+  }
 }
