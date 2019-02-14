@@ -21,9 +21,23 @@ class PhoneService {
     return phones.filter(phone => phone.id.toLowerCase().includes(query.toLowerCase()));
   }
 
+  // _sortBy(phones, sortBy) {
+  //   this.phones = phones;
+  //   return phones.sort((phone1, phone2) => ((phone1[sortBy] > phone2[sortBy]) ? 1 : -1));
+  // }
+
   _sortBy(phones, sortBy) {
     this.phones = phones;
-    return phones.sort((phone1, phone2) => ((phone1[sortBy] > phone2[sortBy]) ? 1 : -1));
+    return this.phones.sort((a, b) => {
+      switch (typeof a[sortBy]) {
+        case 'number':
+          return a[sortBy] - b[sortBy];
+        case 'string':
+          return a[sortBy].localeCompare(b[sortBy]);
+        default:
+          return 1;
+      }
+    });
   }
 }
 

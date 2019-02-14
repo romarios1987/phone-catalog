@@ -13,6 +13,7 @@ module.exports = {
     "no-underscore-dangle": [2, {"allowAfterThis": true}],
     "template-curly-spacing": [0, "always"],
     "import/extensions": 0,
-    "linebreak-style": ["error", "windows"]
+    "linebreak-style": ["error", "windows"],
+    "no-plusplus":"off",
   }
 };

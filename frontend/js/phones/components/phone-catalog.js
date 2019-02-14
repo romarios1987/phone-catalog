@@ -16,7 +16,7 @@ export default class PhoneCatalog extends Component {
     this.on('click', 'cart-button', (event) => {
       const phoneElement = event.target.closest('[data-element="phone"]');
       this.emit(
-        'add-cart-clicked', phoneElement.dataset.phoneId,
+        'add-to-cart', phoneElement.dataset.phoneId,
       );
     });
   }
@@ -33,13 +33,14 @@ export default class PhoneCatalog extends Component {
     this._element.innerHTML = `
         <ul class="phones">
             ${this._phones.map(({
-    id, name, imageUrl, snippet,
+    id, name, age, imageUrl, snippet,
   }) => `
           <li 
             data-element="phone" 
             data-phone-id="${id}"
             class="thumbnail"
           >
+          <span>(#${age})</span>
             <a 
                 data-element="details-link"
                 href="#!/phones/${id}" 

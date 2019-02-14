@@ -3,6 +3,7 @@ import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/PhoneService.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
+import Pagination from './components/pagination.js';
 
 
 export default class PhonesPage {
@@ -13,6 +14,7 @@ export default class PhonesPage {
     this._initViewer();
     this._initShoppingCart();
     this._initFilter();
+    this._initPagination();
 
     this._showPhones();
   }
@@ -40,7 +42,7 @@ export default class PhonesPage {
       this._viewer.show(phoneDetails);
     });
 
-    this._catalog.subscribe('add-cart-clicked', async (phoneId) => {
+    this._catalog.subscribe('add-to-cart', async (phoneId) => {
       const phoneDetails = await PhoneService.getPhoneById(phoneId);
       this._shopping_cart.addToCart(phoneDetails);
     });
@@ -58,7 +60,7 @@ export default class PhonesPage {
     });
 
 
-    this._viewer.subscribe('add-cart-clicked', async (phoneId) => {
+    this._viewer.subscribe('add-to-cart', async (phoneId) => {
       const phoneDetails = await PhoneService.getPhoneById(phoneId);
       this._shopping_cart.addToCart(phoneDetails);
     });
@@ -79,11 +81,20 @@ export default class PhonesPage {
     });
   }
 
+
+  _initPagination() {
+    this._topPagination = new Pagination({
+      element: document.querySelector('[data-component="pagination1"]'),
+    });
+  }
+
+
   _showPhones() {
     const currentFiltering = this._filter.getCurrentData();
     const phonesPromise = PhoneService.getAllPhones(currentFiltering);
     phonesPromise.then((phones) => {
-      console.log(phones);
+      // console.log(phones);
+      this._topPagination.setTotalCount(phones.length);
       this._catalog.show(phones);
     });
   }
@@ -110,6 +121,7 @@ export default class PhonesPage {
     
         <!--Main content-->
         <div class="col-md-8">
+          <div data-component="pagination1"></div>
           <div data-component="phone-catalog"></div>
           <div data-component="phone-viewer"></div>
         </div>
