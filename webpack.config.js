@@ -1,15 +1,14 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'none',
+  // mode: 'none',
   entry: './frontend/index.js',
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'public'),
-    publicPath: 'public/',
   },
 
-  devtool: 'source-map',
+  // devtool: 'source-map',
 
   module: {
     rules: [
@@ -24,11 +23,17 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
 
-
   devServer: {
+    contentBase: path.join(__dirname, 'public'),
     overlay: true,
+    port: 5000,
   },
+
 };
