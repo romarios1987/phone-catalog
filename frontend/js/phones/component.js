@@ -2,6 +2,8 @@ export default class Component {
   constructor({ element }) {
     this._element = element;
     this._callbackMap = {};
+    this._props = {};
+    this._state = {};
   }
 
   hide() {

@@ -14,8 +14,9 @@ export default class PhonesPage extends Component {
     this._state = {
       currentPage: 1,
       phones: [],
-      perPage: 5,
+      perPage: 3,
       currentPhone: null,
+
       query: '',
       sortBy: 'age',
     };
@@ -30,6 +31,27 @@ export default class PhonesPage extends Component {
 
     this._showPhones();
   }
+
+
+  get pagesCount() {
+    const { perPage, phones } = this._state;
+
+    return Math.ceil(phones.length / perPage);
+  }
+
+
+  _setPage(page) {
+    const newPage = Math.min(
+      Math.max(1, page), this.pagesCount,
+    );
+
+    this.setState({
+      currentPage: newPage,
+    });
+
+    this._updateView();
+  }
+
 
   _initShoppingCart() {
     this._shopping_cart = new ShoppingCart({
@@ -100,8 +122,25 @@ export default class PhonesPage extends Component {
 
 
   _initPagination() {
+    const { perPage, currentPage } = this._state;
+
     this._topPagination = new Pagination({
       element: document.querySelector('[data-component="pagination1"]'),
+      props: {
+        perPage,
+        currentPage,
+        pagesCount: this.pagesCount,
+        selector: true,
+        info: true,
+      },
+    });
+
+    this._topPagination.subscribe('page-changed', (currentPageIndex) => {
+      this._setState({ currentPage: currentPageIndex });
+    });
+
+    this._topPagination.subscribe('per-page-changed', (perPageCount) => {
+      this._setState({ perPage: perPageCount, currentPage: 1 });
     });
   }
 
@@ -124,12 +163,29 @@ export default class PhonesPage extends Component {
       phones, currentPage, perPage, currentPhone, query, sortBy,
     } = this._state;
 
+    const startIndex = (currentPage - 1) * perPage;
+    const endIndex = startIndex + perPage;
+
+    const visiblePhones = phones.slice(startIndex, endIndex);
+
+
+    const paginationProps = {
+      pagesCount: this.pagesCount,
+      currentPage,
+      perPage,
+      totalItems: phones.length,
+    };
+
+    this._topPagination.setProps(paginationProps);
+
     if (currentPhone) {
       this._viewer.show(currentPhone);
       this._catalog.hide();
+      this._topPagination.hide();
     } else {
       this._viewer.hide();
-      this._catalog.show(phones);
+      this._catalog.show(visiblePhones);
+      this._topPagination.show();
     }
 
 
@@ -161,7 +217,7 @@ export default class PhonesPage extends Component {
         <div class="col-md-8">
           <div data-component="pagination1"></div>
           <div data-component="phone-catalog"></div>
-          <div data-component="phone-viewer"></div>
+          <div data-component="phone-viewer" hidden></div>
         </div>
          <!--Main content-->
       </div>
