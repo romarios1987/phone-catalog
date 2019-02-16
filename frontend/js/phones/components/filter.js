@@ -1,42 +1,41 @@
 import Component from '../component.js';
 
 export default class Filter extends Component {
-  constructor({ element }) {
+  constructor({ element, props }) {
     super({ element });
+
+    this._props = { ...props };
 
     this._render();
 
-    this._queryField = this._element.querySelector('[data-element="query-field"]');
-    this._orderField = this._element.querySelector('[data-element="order-field"]');
-
-    this.on('input', 'query-field', this.debounce(() => {
-      this.emit('query-changed');
+    this.on('input', 'query-field', this.debounce((event) => {
+      this.emit('query-changed', event.target.value);
     }, 500));
 
 
-    this.on('change', 'order-field', () => {
-      this.emit('order-changed');
+    this.on('change', 'order-field', (event) => {
+      this.emit('order-changed', event.target.value);
     });
   }
 
-
-  getCurrentData() {
-    return {
-      query: this._queryField.value,
-      sortBy: this._orderField.value,
-    };
+  _updateView() {
+    this._render();
   }
 
-
   _render() {
+    const { query, sortBy } = this._props;
     this._element.innerHTML = `
             <p>Search:
-                <input type="text" data-element="query-field">
+                <input type="text" data-element="query-field" value="${query}">
             </p>
             <p>Sort by:
             <select data-element="order-field">
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
+                <option value="name" ${sortBy === 'name' ? 'selected' : ''}>
+                    Alphabetical
+                </option>
+                <option value="age" ${sortBy === 'age' ? 'selected' : ''}>
+                    Newest
+                </option>
               </select>
               </p>
              `;

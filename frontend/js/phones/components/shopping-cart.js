@@ -18,7 +18,7 @@ export default class ShoppingCart extends Component {
 
     this.on('click', 'remove', (event) => {
       const itemElement = event.target.closest('[data-element="basket-item"]');
-      console.log(itemElement);
+      //console.log(itemElement);
 
       this.remove(itemElement.dataset.itemId);
     });
@@ -26,7 +26,7 @@ export default class ShoppingCart extends Component {
 
     this.on('click', 'details-link', (e) => {
       const itemElement = e.target.closest('[data-element="basket-item"]');
-      console.log(itemElement);
+      //console.log(itemElement);
       // this.emit('phone-selected', e.target);
       this.emit('phone-selected', itemElement.dataset.itemId);
     });
@@ -124,7 +124,7 @@ export default class ShoppingCart extends Component {
   }
 
   _render() {
-    console.log(this._basketItems);
+    //console.log(this._basketItems);
     this._element.innerHTML = `
          <h3 class="text-center">Shopping Cart</h3>
             <ul data-element="basket-list-items" class="list-group">
