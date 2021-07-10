@@ -1,0 +1,37 @@
+{
+  "name": "phone-catalog",
+  "version": "1.0.0",
+  "description": "Creating Phone Catalog on vanilla js",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romarios1987/phone-catalog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romarios1987/phone-catalog/issues"
+  },
+  "homepage": "https://github.com/romarios1987/phone-catalog#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.3.1",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "raw-loader": "^1.0.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.1.14"
+  }
+}
